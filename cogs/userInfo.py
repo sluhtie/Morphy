@@ -1,12 +1,10 @@
 import discord
 from discord.ext import commands
-
 import views.lookupUser
 
 
 class UserInfo(commands.Cog):
 
-    # this is a special method that is called when the cog is loaded
     def __init__(self, bot):
         self.bot = bot
 
@@ -15,14 +13,10 @@ class UserInfo(commands.Cog):
         target = member if member else ctx.author
         view = views.lookupUser.lookupUserBTN()
         view.add_item(await views.lookupUser.lookupUserBTN().button(url=f'https://discordlookup.com/user/{target.id}'))
-        await ctx.respond(embed=get_user_info_embed(target), view=view, ephemeral=True)
-
-    @discord.user_command(name='Get User Info')
-    async def get_user_info(self, ctx, member: discord.Member):
-        await ctx.respond(embed=get_user_info_embed(member), ephemeral=True)
+        await ctx.respond(embed=await get_user_info_embed(bots=self.bot, member=target), view=view, ephemeral=True)
 
 
-def get_user_info_embed(member: discord.Member):
+async def get_user_info_embed(bots: discord.Bot, member: discord.Member):
     embed = discord.Embed(
         title='User Information:',
         color=discord.Color.from_rgb(100, 255, 100)
@@ -40,6 +34,9 @@ def get_user_info_embed(member: discord.Member):
     embed.add_field(name='Roles:', value=f'{roles}', inline=False)
 
     embed.set_thumbnail(url=member.avatar.url)
+
+    # user = await bots.fetch_user(member.id)
+    # embed.set_image(url=user.banner.url)
     return embed
 
 

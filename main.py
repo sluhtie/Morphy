@@ -1,24 +1,32 @@
-import discord
-import os  # default module
-from dotenv import load_dotenv
+import pathlib
 
-import cogs.userInfo
+import discord
+import os
+
+from dotenv import load_dotenv
+from logger import logger
 
 load_dotenv()  # load all the variables from the env file
 bot = discord.Bot(intents=discord.Intents.all())
 
-for cog in ['cogs.userInfo']: bot.load_extension(cog)
+for cog in (cogs := [cog for cog in pathlib.Path('cogs').iterdir() if cog.name != '__pycache__']):
+    cogstring = str(cog).replace('/', '.')
+    try:
+        bot.load_extension(cogstring.replace('.py', ''))
+        logger.info(f'Loaded cog: {cogstring}')
+    except FileNotFoundError as ex:
+        logger.error(f"Error. The file does not exist: {ex}")
+    except PermissionError as ex:
+        logger.error(f"Error: Permission denied: {ex}")
+    except OSError as ex:
+        logger.error(f"Error. OS Error: {ex}")
+    except Exception as ex:
+        logger.error(f"An unexpected Error occurred: {ex}")
 
 
 @bot.event
 async def on_ready():
-    print(f"{bot.user} is ready and online212!")
-
-
-@bot.slash_command(name="hello", description="Say hello to the bot")
-async def hello(ctx):
-    module = cogs.userInfo
-    await ctx.respond(embed=module.get_user_info(ctx.author))
+    print(f"{bot.user} is ready and online!")
 
 
 bot.run(os.getenv('TOKEN'))  # run the bot with the token

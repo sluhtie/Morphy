@@ -3,6 +3,7 @@ import pathlib
 import discord
 import os
 
+from discord import guild
 from dotenv import load_dotenv
 from logger import logger
 
@@ -27,6 +28,18 @@ for cog in ["cogs.userInfo", "cogs.purgeMessages"]:
 @bot.event
 async def on_ready():
     print(f"{bot.user} is ready and online!")
+    for guildinstance in bot.guilds:
+        await bot.change_presence(activity=discord.Activity(
+            type=discord.ActivityType.playing,
+            name=f"{guildinstance.member_count} members")
+        )
+
+
+@bot.event
+async def on_member_join(member: discord.Member):
+    channel = member.guild.get_channel(1104773857786724372)
+    message = f"Welcome {member.mention} to {member.guild.name}!"
+    await channel.send(message)
 
 
 bot.run(os.getenv('TOKEN'))  # run the bot with the token

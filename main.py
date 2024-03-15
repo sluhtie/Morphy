@@ -1,8 +1,6 @@
 import discord
 import os
 from dotenv import load_dotenv
-
-from cogs.events.joinEvent import join_log_embed, leave_log_embed
 from logger import logger
 
 load_dotenv()  # load all the variables from the env file
@@ -12,9 +10,12 @@ bot = discord.Bot(intents=discord.Intents.all())
 cogs = [
     "cogs.commands.userInfo",
     "cogs.commands.purgeMessages",
-    "cogs.events.joinEvent"
+    "cogs.events.joinLeaveListener",
+    "cogs.events.messageListener"
 ]
-for cog in cogs: bot.load_extension(cog) and logger.info(f'Loaded cog: {cog}')
+for cog in cogs:
+    bot.load_extension(cog)
+    logger.info(f'Loaded cog: {cog}')
 
 
 @bot.event

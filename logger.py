@@ -1,20 +1,3 @@
-"""
-===============================================================================
-
-File: logger.py
-
- (C) 2024 by ADVANCED Systemhaus GmbH. All rights reserved.
-             Maria Worona <maria.worona@advanced.info>
-
-    2024.03.12 initial setup
-
-    Python Version: 3.11.2
-    UTF-8
-    CRLF
-
-===============================================================================
-"""
-
 import logging
 
 

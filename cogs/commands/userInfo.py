@@ -12,7 +12,7 @@ class UserInfo(commands.Cog):
     async def get_user_info_cmd(self, ctx, member: discord.Option(discord.Member) = None):
         target = member if member else ctx.author
         view = views.lookupUser.lookupUserBTN()
-        view.add_item(await views.lookupUser.lookupUserBTN().button(url=f'https://discordlookup.com/user/{target.id}'))
+        view.add_item(await views.lookupUser.button(url=f'https://discordlookup.com/user/{target.id}'))
         await ctx.respond(embed=await get_user_info_embed(bots=self.bot, member=target), view=view, ephemeral=True)
 
 

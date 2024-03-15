@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 
 
-class JoinLogger(commands.Cog):
+class JoinLeaveListener(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -47,5 +47,4 @@ def leave_log_embed(member):
     return embed
 
 
-def setup(bot):
-    bot.add_cog(JoinLogger(bot))
+def setup(bot): bot.add_cog(JoinLeaveListener(bot))

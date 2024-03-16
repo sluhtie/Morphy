@@ -11,29 +11,43 @@ class MessageListener(commands.Cog):
     @commands.Cog.listener()
     async def on_message_delete(self, message: discord.Message):
         if message.author != self.bot.user:
-            await message.author.guild.get_channel(config.LOG_CHANNEL).send(f"User: {message.author.mention} > "
-                                                                             f"Message: `{message.content}` > "
-                                                                             f"Channel: `{message.channel}`")
+            await message.author.guild.get_channel(config.LOG_CHANNEL).send(embed=message_log_embed(before=message))
 
     @commands.Cog.listener()
     async def on_message_edit(self, before: discord.Message, after: discord.Message):
-        await before.author.guild.get_channel(config.LOG_CHANNEL).send(embed=message_edit_embed(before, after))
+        if before.author != self.bot.user:
+            await before.author.guild.get_channel(config.LOG_CHANNEL).send(embed=message_log_embed(before, after))
 
 
-def message_edit_embed(before: discord.Message, after: discord.Message):
+def message_log_embed(before: discord.Message = None, after: discord.Message = None):
+
+    if after is not None:
+        title = "Message Edited"
+        color = discord.Colour.from_rgb(230, 196, 75)
+        timestamp = after.created_at
+    else:
+        title = "Message Deleted"
+        color = discord.Colour.from_rgb(230, 78, 75)
+        timestamp = before.created_at
+
     embed = discord.Embed(
-        title="Message Edited",
-        timestamp=after.created_at
+        title=title,
+        color=color,
+        timestamp=timestamp
     )
 
     embed.add_field(name='Author', value=before.author.mention, inline=True)
     embed.add_field(name='Channel', value=before.channel.mention, inline=True)
-    msg_link = f"https://discord.com/channels/{before.guild.id}/{before.channel.id}/{before.id}"
-    embed.add_field(name='Message Reference', value=msg_link, inline=True)
-    embed.add_field(name='Original Message', value=f"```{before.content}```", inline=False)
-    embed.add_field(name='Edited Message', value=f"```{after.content}```", inline=False)
 
-    embed.set_thumbnail(url='https://cdn-icons-png.freepik.com/512/1973/1973807.png ')
+    if after is not None:
+        msg_link = f"https://discord.com/channels/{before.guild.id}/{before.channel.id}/{before.id}"
+        embed.add_field(name='Message Reference', value=msg_link, inline=True)
+        embed.add_field(name='Original Message', value=f"```{before.content}```", inline=False)
+        embed.add_field(name='Edited Message', value=f"```{after.content}```", inline=False)
+        embed.set_thumbnail(url='https://cdn-icons-png.freepik.com/512/1973/1973807.png')
+    else:
+        embed.add_field(name='Message', value=f"```{before.content}```", inline=False)
+        embed.set_thumbnail(url='https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Flat_cross_icon.svg/2048px-Flat_cross_icon.svg.png')
 
     return embed
 

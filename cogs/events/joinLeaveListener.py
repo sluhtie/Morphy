@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 
+import config
+
 
 class JoinLeaveListener(commands.Cog):
     def __init__(self, bot):
@@ -9,15 +11,15 @@ class JoinLeaveListener(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
         guild = member.guild
-        join_log_channel = guild.get_channel(1109924971951685682)
-        welcome_channel = guild.get_channel(1104773857786724372)
+        join_log_channel = config.LOG_CHANNEL
+        welcome_channel = config.WELCOME_CHANNEL
 
         await welcome_channel.send(f"Welcome {member.mention} to {guild.name}!")
         await join_log_channel.send(embed=join_log_embed(member))
 
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member):
-        join_log_channel = member.guild.get_channel(1109924971951685682)
+        join_log_channel = member.guild.get_channel(config.LOG_CHANNEL)
         await join_log_channel.send(embed=leave_log_embed(member))
 
 

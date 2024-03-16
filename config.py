@@ -1,0 +1,9 @@
+# Logging Channels
+LOG_CHANNEL = 1109924971951685682
+WELCOME_CHANNEL = 1104773857786724372
+
+# Database Configuration
+HOST = 'localhost'
+PORT = 446
+USERNAME = 'root'
+PASSWORD = '<PASSWORD>'

@@ -8,12 +8,12 @@ class MessageListener(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.Cog.listener()
+    @commands.Cog.listener
     async def on_message_delete(self, message: discord.Message):
         if message.author != self.bot.user:
             await message.author.guild.get_channel(config.MESSAGE_LOGS).send(embed=message_log_embed(before=message))
 
-    @commands.Cog.listener()
+    @commands.Cog.listener
     async def on_message_edit(self, before: discord.Message, after: discord.Message):
         if before.author != self.bot.user:
             await before.author.guild.get_channel(config.MESSAGE_LOGS).send(embed=message_log_embed(before, after))
@@ -51,7 +51,6 @@ def message_log_embed(before: discord.Message = None, after: discord.Message = N
         embed.set_thumbnail(url='https://i.imgur.com/zWiY6Dr.png')
 
     embed.set_footer(icon_url=before.author.avatar.url)
-
     return embed
 
 

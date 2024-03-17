@@ -11,12 +11,12 @@ class MessageListener(commands.Cog):
     @commands.Cog.listener()
     async def on_message_delete(self, message: discord.Message):
         if message.author != self.bot.user:
-            await message.author.guild.get_channel(config.LOG_CHANNEL).send(embed=message_log_embed(before=message))
+            await message.author.guild.get_channel(config.MESSAGE_LOGS).send(embed=message_log_embed(before=message))
 
     @commands.Cog.listener()
     async def on_message_edit(self, before: discord.Message, after: discord.Message):
         if before.author != self.bot.user:
-            await before.author.guild.get_channel(config.LOG_CHANNEL).send(embed=message_log_embed(before, after))
+            await before.author.guild.get_channel(config.MESSAGE_LOGS).send(embed=message_log_embed(before, after))
 
 
 def message_log_embed(before: discord.Message = None, after: discord.Message = None):
@@ -44,10 +44,13 @@ def message_log_embed(before: discord.Message = None, after: discord.Message = N
         embed.add_field(name='Message Reference', value=msg_link, inline=True)
         embed.add_field(name='Original Message', value=f"```{before.content}```", inline=False)
         embed.add_field(name='Edited Message', value=f"```{after.content}```", inline=False)
-        embed.set_thumbnail(url='https://cdn-icons-png.freepik.com/512/1973/1973807.png')
+        embed.set_thumbnail(url='https://i.imgur.com/0bsXJlw.png')
     else:
+        embed.add_field(name='Message ID', value=f"`{before.id}`", inline=True)
         embed.add_field(name='Message', value=f"```{before.content}```", inline=False)
-        embed.set_thumbnail(url='https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Flat_cross_icon.svg/2048px-Flat_cross_icon.svg.png')
+        embed.set_thumbnail(url='https://i.imgur.com/zWiY6Dr.png')
+
+    embed.set_footer(icon_url=before.author.avatar.url)
 
     return embed
 

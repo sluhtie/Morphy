@@ -10,6 +10,7 @@ bot = discord.Bot(intents=discord.Intents.all())
 cogs = [
     "cogs.commands.userInfo",
     "cogs.commands.purgeMessages",
+    "cogs.commands.economySystem",
     "cogs.events.joinLeaveListener",
     "cogs.events.messageListener",
     "cogs.events.channelListener"

@@ -11,16 +11,18 @@ class JoinLeaveListener(commands.Cog):
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
         guild = member.guild
-        join_log_channel = config.LOG_CHANNEL
+        join_log_channel = config.GENERAL_LOGS
         welcome_channel = config.WELCOME_CHANNEL
 
-        await welcome_channel.send(f"Welcome {member.mention} to {guild.name}!")
-        await join_log_channel.send(embed=join_log_embed(member))
+        await member.guild.get_channel(welcome_channel).send(f"Welcome {member.mention} to {guild.name}!")
+        if config.LOGGING is True:
+            await member.guild.get_channel(join_log_channel).send(embed=join_log_embed(member))
 
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member):
-        join_log_channel = member.guild.get_channel(config.LOG_CHANNEL)
-        await join_log_channel.send(embed=leave_log_embed(member))
+        if config.LOGGING is True:
+            join_log_channel = member.guild.get_channel(config.GENERAL_LOGS)
+            await join_log_channel.send(embed=leave_log_embed(member))
 
 
 # Join Log Embed

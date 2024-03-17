@@ -13,7 +13,7 @@ class ChannelListener(commands.Cog):
     @commands.Cog.listener()
     async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState,
                                     after: discord.VoiceState):
-        if before.channel != after.channel:
+        if before.channel != after.channel and config.LOGGING is True:
 
             if before.channel is None:
                 title = 'Voice channel joined'

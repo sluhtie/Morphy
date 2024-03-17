@@ -11,7 +11,8 @@ cogs = [
     "cogs.commands.userInfo",
     "cogs.commands.purgeMessages",
     "cogs.events.joinLeaveListener",
-    "cogs.events.messageListener"
+    "cogs.events.messageListener",
+    "cogs.events.channelListener"
 ]
 for cog in cogs:
     bot.load_extension(cog)
@@ -21,9 +22,6 @@ for cog in cogs:
 @bot.event
 async def on_ready():
     print(f"{bot.user} is ready and online!")
-
-    # await bot.get_channel(1109924971951685682).send(embed=join_log_embed(bot.get_guild(1000913517660098692).get_member(830057380359438396)))
-    # await bot.get_channel(1109924971951685682).send(embed=leave_log_embed(bot.get_guild(1000913517660098692).get_member(830057380359438396)))
 
     # Change presence for each guild to member count
     for guildinstance in bot.guilds:

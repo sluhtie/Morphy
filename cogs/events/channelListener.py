@@ -10,7 +10,7 @@ class ChannelListener(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.Cog.listener
+    @commands.Cog.listener()
     async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState,
                                     after: discord.VoiceState):
         if before.channel != after.channel and config.LOGGING is True:

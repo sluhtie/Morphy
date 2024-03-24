@@ -11,9 +11,13 @@ class UserInfo(commands.Cog):
     @discord.slash_command(name='userinfo', description='Provides information about a Discord Member')
     async def get_user_info_cmd(self, ctx, member: discord.Option(discord.Member) = None):
         target = member if member else ctx.author
-        view = views.lookupUser.lookupUserBTN()
-        view.add_item(await views.lookupUser.button(url=f'https://discordlookup.com/user/{target.id}'))
-        await ctx.respond(embed=await get_user_info_embed(bots=self.bot, member=target), view=view, ephemeral=True)
+
+        # Create empty view & Add button to view
+        view = views.lookupUser.lookupUserView()
+        view.add_item(await views.lookupUser.lookupUserView.lookupBTN(target))
+
+        embed = await get_user_info_embed(bots=self.bot, member=target)
+        await ctx.respond(embed=embed, view=view, ephemeral=True)
 
 
 async def get_user_info_embed(bots: discord.Bot, member: discord.Member):

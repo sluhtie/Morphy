@@ -1,11 +1,12 @@
 import discord
-from discord.ui import Button
 
 
-async def button(label='User Lookup', style=discord.ButtonStyle.link, url=None):
-    return discord.ui.Button(label=label, style=style, url=url)
+class lookupUserView(discord.ui.View):
 
+    async def lookupBTN(self, target=discord.Member):
 
-class lookupUserBTN(discord.ui.View):
-    pass
-
+        return discord.ui.Button(
+            label='User Lookup',
+            style=discord.ButtonStyle.link,
+            url=f'https://discordlookup.com/user/{target.id}'
+        )

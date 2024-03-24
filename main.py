@@ -8,6 +8,7 @@ bot = discord.Bot(intents=discord.Intents.all())
 
 # Load all cogs
 cogs = [
+    # "cogs.commands.applySetup",
     "cogs.commands.userInfo",
     "cogs.commands.purgeMessages",
     "cogs.commands.economySystem",
